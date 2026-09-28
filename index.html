@@ -242,7 +242,7 @@ const HOTEL = { name: 'Villa Messner · Val di Funes', lat: 46.6473, lng: 11.700
 const DAYS = [
   { id: 0, label: '总览', color: '#0071e3', locations: [] },
   { id: 1, label: '10/1', date: '2026年10月1日 · 周四', title: '米兰落地 · Mestre · 威尼斯主岛', color: '#ff9500', locations: [
-    { name: 'Milan Malpensa T1', lat: 45.6306, lng: 8.7281, type: 'transport', time: '09:50', desc: 'Finnair AY1751 抵达；T1 到达', detail: '租车预约原为 09:45，与航班冲突。请改至 11:00-11:30。', gmap: 'Milan+Malpensa+Airport+Terminal+1' },
+    { name: 'Milan Malpensa T1', lat: 45.6306, lng: 8.7281, type: 'transport', time: '09:50', desc: 'Finnair AY1751 抵达；T1 到达', gmap: 'Milan+Malpensa+Airport+Terminal+1' },
     { name: 'Centauro Malpensa', lat: 45.6658, lng: 8.7037, type: 'transport', time: '11:30', desc: '乘黄色接驳车前往 Vizzola Ticino 门店取车', detail: 'Via per Tornavento / SP52, 5, 21010 Vizzola Ticino。接驳车约每 10-15 分钟一班。', gmap: 'Centauro+Rent+a+Car+Malpensa' },
     { name: 'Ciclamino Apartment', lat: 45.4972, lng: 12.2479, type: 'hotel', time: '14:00', desc: 'Mestre 住所入住、放行李和午餐', detail: 'Quartiere Aretusa 56, Venice, Veneto 30173。10/2 10:00 退房。', gmap: 'Quartiere+Aretusa+56+Venice' },
     { name: '威尼斯主岛', lat: 45.4343, lng: 12.3388, type: 'spot', time: '15:30', desc: 'San Marco、Rialto 和运河散步', gmap: 'Piazza+San+Marco+Venice' }
@@ -264,7 +264,7 @@ const DAYS = [
     { name: 'Resciesa funicular', lat: 46.6050, lng: 11.7040, type: 'spot', time: '14:00', desc: '棺材缆车 / Rasciesa；短途观景步行', detail: '中文俗称需以现场英文 / 意大利文名称 Rasciesa 或 Resciesa 核对。', gmap: 'Resciesa+funicular' }
   ] },
   { id: 5, label: '10/5', date: '2026年10月5日 · 周一', title: '休斯高原 · Adolf Munkel Trail', color: '#ff2d55', locations: [
-    { name: 'Alpe di Siusi', lat: 46.5400, lng: 11.6340, type: 'spot', time: '08:00', desc: '休斯高原 / Seiser Alm；确认私家车进入限制', detail: '优先使用允许的缆车或公交，不要默认可以把租车开上高原。', gmap: 'Alpe+di+Siusi+Seiser+Alm' },
+    { name: '休斯高原', lat: 46.5753, lng: 11.7152, type: 'transport', time: '08:00', desc: '前往休斯高原的缆车停车场', detail: '从停车场乘缆车前往休斯高原 / Seiser Alm。出发前确认停车和缆车运营信息。', gmap: 'Ortisei+Seilbahn+parking' },
     { name: 'Adolf Munkel Trail', lat: 46.6137, lng: 11.7240, type: 'spot', time: '14:00', desc: 'Geisler Alm 方向徒步', detail: '准备水、保暖层和离线轨迹；天气恶化时缩短路线。', gmap: 'Adolf+Munkel+Trail' }
   ] },
   { id: 6, label: '10/6', date: '2026年10月6日 · 周二', title: 'Bolzano · 米兰机场', color: '#5ac8fa', locations: [
@@ -285,12 +285,12 @@ function overviewContent() {
   <div class="info-card"><div class="label">住宿</div><div class="value">Mestre · Auronzo · Villa Messner</div></div>
   <div class="info-card"><div class="label">航班</div><div class="value">Finnair AY100 / AY1751 / AY1756 / AY099</div></div>
   <div class="info-card"><div class="label">交通</div><div class="value">Centauro Group F4A 租车</div></div>
-  <div class="info-card"><div class="label">已知费用</div><div class="value">机票 CNY 4,105；住宿订单已付</div></div>
+  <div class="info-card"><div class="label">行程</div><div class="value">6天5夜 · 10/1—10/6</div></div>
 </div>
 <div class="section-head">行程概览</div>
 <div class="day-list">${DAYS.slice(1).map(d=>`<div class="card" onclick="go(${d.id})"><div class="name"><span class="dot" style="background:${d.color}"></span>${d.label} · ${d.title}</div><div class="desc">${d.date}</div></div>`).join('')}</div>
 <div class="section-head">支付提醒</div>
-<div class="card"><div class="name">山区与小城优先准备实体卡和少量现金</div><div class="desc">缆车、停车、山路设施和餐厅的收款方式可能不同；门票与运营状态需临行前确认。10/1 租车取车时间需改到航班抵达之后。</div></div>
+<div class="card"><div class="name">山区与小城优先准备实体卡和少量现金</div><div class="desc">缆车、停车、山路设施和餐厅的收款方式可能不同；门票与运营状态需临行前确认。</div></div>
 <div class="section-head">图例</div>
 <div class="legend">
   <div class="legend-item"><div class="legend-dot" style="background:var(--tint-red)"></div>餐厅</div>
@@ -306,7 +306,10 @@ function overviewContent() {
 
 const map = L.map('map', { center: [HOTEL.lat || 35.69, HOTEL.lng || 139.74], zoom: 12, zoomControl: false, attributionControl: true });
 L.control.zoom({ position: 'topright' }).addTo(map);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+  maxZoom: 19,
+  attribution: 'Tiles &copy; Esri'
+}).addTo(map);
 
 /* ── Geolocation ── */
 const LocateControl = L.Control.extend({
